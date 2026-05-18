@@ -42,3 +42,21 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 });
+
+// Play brand intro when logo and page fully load
+window.addEventListener('load', () => {
+    const brandIntro = document.getElementById('brand-intro');
+    if (brandIntro) {
+        brandIntro.volume = 0.6;
+        const playPromise = brandIntro.play();
+        
+        if (playPromise !== undefined) {
+            playPromise.catch(error => {
+                console.log('Autoplay prevented. Playing on first user interaction.');
+                document.body.addEventListener('click', () => {
+                    brandIntro.play().catch(e => console.log('Audio play failed:', e));
+                }, { once: true });
+            });
+        }
+    }
+});
